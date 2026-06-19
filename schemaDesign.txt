@@ -1,0 +1,32 @@
+
+CREATE TABLE buildings (
+    id              SERIAL PRIMARY KEY,
+    name            VARCHAR(150) NOT NULL,
+    location        TEXT NOT NULL, -- can later evolve into geo coordinates
+    building_type   VARCHAR(50), -- office | mall | hospital | factory | warehouse
+    total_area_sqft INT,
+    peak_load_kw    DECIMAL(10,2),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE electrical_assets (
+    id              SERIAL PRIMARY KEY,
+    building_id     INT NOT NULL REFERENCES buildings(id) ON DELETE CASCADE,
+    asset_name      VARCHAR(150) NOT NULL,
+    asset_type      VARCHAR(50),   -- main_meter | sub_meter | hvac | lighting | solar | ups | machinery
+    capacity_kw     DECIMAL(10,2),
+    voltage_rating  DECIMAL(10,2),
+    status          VARCHAR(20) DEFAULT 'active', -- active | inactive | faulty | maintenance
+    installed_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE energy_metrics (
+    id              SERIAL PRIMARY KEY,
+    asset_id        INT NOT NULL REFERENCES electrical_assets(id) ON DELETE CASCADE,
+    recorded_at     TIMESTAMP NOT NULL,
+    energy_kwh      DECIMAL(12,4) NOT NULL,
+    power_kw        DECIMAL(12,4),
+    voltage         DECIMAL(10,2),
+    current         DECIMAL(10,2),
+    power_factor    DECIMAL(5,3),
+    frequency_hz    DECIMAL(6,2)
+);

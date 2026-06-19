@@ -1,0 +1,10 @@
+
+1.Missing lucid package and Forgot to configure lucid when trying ace:model
+2.waring - typescript shows warning for not declaring initial values using constructor
+but lucid does the initialisation when the value is inserted
+3."message": "routeHandler.handler is not a function"
+solution: function call using classes in the route file should have()
+eg: classname.store() not classname.store
+4.Router Handler not found issue. - Enclosing the handler names in routes
+with single quotes
+5.Forgot to run the make:migrations resulted in internal server error
