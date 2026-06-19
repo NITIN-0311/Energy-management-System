@@ -34,7 +34,8 @@
     "start/**/*",
     "config/**/*",
     "database/**/*",
-    "contracts/**/*"
+    "contracts/**/*",
+    "providers/**/*"
   ],
 
   "exclude": [
