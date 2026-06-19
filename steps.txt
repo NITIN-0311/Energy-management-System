@@ -1,0 +1,5 @@
+
+
+
+1.Define Routes with controller name
+2.node ace make:controller <controller name>

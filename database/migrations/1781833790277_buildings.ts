@@ -12,7 +12,6 @@ export default class extends BaseSchema {
       table.integer('total_area_sqft')
       table.decimal('peak_load_kw',10,2)
       table.timestamp('created_at').defaultTo(this.now())
-
     })
   }
 

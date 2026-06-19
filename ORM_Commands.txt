@@ -1,0 +1,273 @@
+Model
+│
+├── Create
+│   ├── create()
+│   ├── createMany()
+│   ├── new Model()
+│   └── save()
+│
+├── Read
+│   ├── all()
+│   ├── find()
+│   ├── findOrFail()
+│   ├── findBy()
+│   ├── first()
+│   ├── firstOrFail()
+│   └── query()
+│
+├── Update
+│   ├── merge()
+│   ├── fill()
+│   └── save()
+│
+├── Delete
+│   └── delete()
+│
+├── Refresh
+│   └── refresh()
+│
+├── Relationships
+│   ├── load()
+│   ├── preload()
+│   └── related()
+│
+├── Serialization
+│   ├── serialize()
+│   └── toJSON()
+│
+└── Utilities
+    ├── isDirty
+    ├── isPersisted
+    ├── isLocal
+    └── $dirty
+
+
+
+
+Model
+│
+├── Create
+│   │
+│   ├── create()
+│   │   ├── Purpose
+│   │   │      Create and immediately save one record.
+│   │   ├── SQL
+│   │   │      INSERT INTO users(name,email)
+│   │   │      VALUES('Nitin','nitin@gmail.com');
+│   │   └── Example
+│   │          const user = await User.create({
+│   │            name: 'Nitin',
+│   │            email: 'nitin@gmail.com',
+│   │          })
+│   │
+│   ├── createMany()
+│   │   ├── Purpose
+│   │   │      Insert multiple records.
+│   │   ├── SQL
+│   │   │      INSERT INTO users(...)
+│   │   │      VALUES (...), (...);
+│   │   └── Example
+│   │          await User.createMany([
+│   │            { name:'John', email:'john@gmail.com' },
+│   │            { name:'Alice', email:'alice@gmail.com' }
+│   │          ])
+│   │
+│   ├── new Model()
+│   │   ├── Purpose
+│   │   │      Create a model instance in memory.
+│   │   ├── SQL
+│   │   │      None (not saved yet)
+│   │   └── Example
+│   │          const user = new User()
+│   │          user.name = 'Nitin'
+│   │          user.email = 'nitin@gmail.com'
+│   │
+│   └── save()
+│       ├── Purpose
+│       │      Persist model to database.
+│       ├── SQL
+│       │      INSERT (new record)
+│       │      UPDATE (existing record)
+│       └── Example
+│              await user.save()
+│
+├── Read
+│   │
+│   ├── all()
+│   │   ├── Purpose
+│   │   │      Retrieve all records.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users;
+│   │   └── Example
+│   │          const users = await User.all()
+│   │
+│   ├── find(id)
+│   │   ├── Purpose
+│   │   │      Find by primary key.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users WHERE id=1;
+│   │   └── Example
+│   │          const user = await User.find(1)
+│   │
+│   ├── findOrFail(id)
+│   │   ├── Purpose
+│   │   │      Find by primary key or throw exception.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users WHERE id=1;
+│   │   └── Example
+│   │          const user = await User.findOrFail(1)
+│   │
+│   ├── findBy(column,value)
+│   │   ├── Purpose
+│   │   │      Find using another column.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users
+│   │   │      WHERE email='abc@gmail.com';
+│   │   └── Example
+│   │          const user = await User.findBy(
+│   │            'email',
+│   │            'abc@gmail.com'
+│   │          )
+│   │
+│   ├── first()
+│   │   ├── Purpose
+│   │   │      Return first matching record.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users LIMIT 1;
+│   │   └── Example
+│   │          const user = await User.query().first()
+│   │
+│   ├── firstOrFail()
+│   │   ├── Purpose
+│   │   │      Return first record or throw.
+│   │   ├── SQL
+│   │   │      SELECT * FROM users LIMIT 1;
+│   │   └── Example
+│   │          const user = await User.query().firstOrFail()
+│   │
+│   └── query()
+│       ├── Purpose
+│       │      Build custom SQL queries.
+│       ├── SQL
+│       │      SELECT * FROM users
+│       │      WHERE location='Chennai'
+│       │      ORDER BY name;
+│       └── Example
+│              const users = await User.query()
+│                .where('location','Chennai')
+│                .orderBy('name')
+│
+├── Update
+│   │
+│   ├── merge()
+│   │   ├── Purpose
+│   │   │      Update selected properties.
+│   │   ├── SQL
+│   │   │      UPDATE users SET name='Alex'
+│   │   │      WHERE id=1;
+│   │   └── Example
+│   │          user.merge({
+│   │            name:'Alex'
+│   │          })
+│   │
+│   ├── fill()
+│   │   ├── Purpose
+│   │   │      Replace model properties.
+│   │   ├── SQL
+│   │   │      UPDATE users ...
+│   │   └── Example
+│   │          user.fill({
+│   │            name:'Alex'
+│   │          })
+│   │
+│   └── save()
+│       ├── Purpose
+│       │      Save merged/filled changes.
+│       ├── SQL
+│       │      UPDATE users ...
+│       └── Example
+│              await user.save()
+│
+├── Delete
+│   │
+│   └── delete()
+│       ├── Purpose
+│       │      Remove record.
+│       ├── SQL
+│       │      DELETE FROM users WHERE id=1;
+│       └── Example
+│              await user.delete()
+│
+├── Refresh
+│   │
+│   └── refresh()
+│       ├── Purpose
+│       │      Reload latest database values.
+│       ├── SQL
+│       │      SELECT * FROM users WHERE id=1;
+│       └── Example
+│              await user.refresh()
+│
+├── Relationships
+│   │
+│   ├── load()
+│   │   ├── Purpose
+│   │   │      Load relationship for one model.
+│   │   └── Example
+│   │          await user.load('consumptions')
+│   │
+│   ├── preload()
+│   │   ├── Purpose
+│   │   │      Load relationship while querying.
+│   │   └── Example
+│   │          const users = await User.query()
+│   │            .preload('consumptions')
+│   │
+│   └── related()
+│       ├── Purpose
+│       │      Perform operations through relationships.
+│       └── Example
+│              await user.related('consumptions')
+│                .create({
+│                  units:250
+│                })
+│
+├── Serialization
+│   │
+│   ├── serialize()
+│   │   ├── Purpose
+│   │   │      Convert model using serialization rules.
+│   │   └── Example
+│   │          return user.serialize()
+│   │
+│   └── toJSON()
+│       ├── Purpose
+│       │      Convert model to plain object.
+│       └── Example
+│              return user.toJSON()
+│
+└── Utilities
+    │
+    ├── isDirty
+    │   ├── Purpose
+    │   │      Check if fields changed.
+    │   └── Example
+    │          console.log(user.$isDirty)
+    │
+    ├── isPersisted
+    │   ├── Purpose
+    │   │      Check if record exists in DB.
+    │   └── Example
+    │          console.log(user.$isPersisted)
+    │
+    ├── isLocal
+    │   ├── Purpose
+    │   │      Check if model is not yet saved.
+    │   └── Example
+    │          console.log(user.$isLocal)
+    │
+    └── $dirty
+        ├── Purpose
+        │      Show modified fields.
+        └── Example
+               console.log(user.$dirty)

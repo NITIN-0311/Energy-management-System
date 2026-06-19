@@ -29,7 +29,19 @@ Route.get('/', async () => {
 })
 
 Route.post('/buildings','BuildingsController.store');
-Route.get('/buildings','BuildingsController.list');
+
+Route.get('/buildings','BuildingsController.fetchall');
+Route.get('/buildings/:id','BuildingsController.filter');
+Route.get('/buildings/buildingtype/:type','BuildingsController.fetchByType');
+Route.get('/buildings/area/:total_area_sqft','BuildingsController.fetchByArea');
+
+Route.patch('/buildings/update/:id','BuildingsController.updateById');
+
+Route.delete('/buildings/delete/:id','BuildingsController.deleteById');
+
+
+//Routes for
+Route.delete('/electrical_assests','ElectricalAssetsController.list');
 
 /*
 
