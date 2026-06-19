@@ -6,14 +6,19 @@ const databaseConfig: DatabaseConfig = {
 
   connections: {
     pg: {
-      client: 'pg',
-      connection: Env.get('DATABASE_URL', ''),
-      migrations: {
-        naturalSort: true,
-      },
-      healthCheck: false,
-      debug: false,
+  client: 'pg',
+  connection: {
+    connectionString: Env.get('DATABASE_URL', ''),
+    ssl: {
+      rejectUnauthorized: false
     },
+  },
+  migrations: {
+    naturalSort: true,
+  },
+  healthCheck: false,
+  debug: false,
+},
   },
 }
 
