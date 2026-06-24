@@ -25,7 +25,48 @@ Main module resposnible for routing the APIs Hits to the right controller
 
 */
 Route.get('/', async () => {
-  return { hello: 'world' }
+  return {
+    project: 'Energy Management System API',
+    version: '1.0.0',
+    description:
+      'REST API for managing buildings and electrical assets with Admin and User authentication.',
+
+    authentication: {
+      adminRegister: 'POST /admin/register',
+      adminLogin: 'POST /admin/login',
+      userRegister: 'POST /user/register',
+      userLogin: 'POST /user/login',
+    },
+
+    buildings: {
+      create: 'POST /buildings (Admin)',
+      update: 'PATCH /buildings/update/:id (Admin)',
+      delete: 'DELETE /buildings/delete/:id (Admin)',
+      getAll: 'GET /buildings',
+      getById: 'GET /buildings/:id',
+      getByType: 'GET /buildings/buildingtype/:type',
+      getByArea: 'GET /buildings/area/:total_area_sqft',
+    },
+
+    electricalAssets: {
+      create: 'POST /electrical-assets (Admin)',
+      update: 'PATCH /electrical-assets/update/:id (Admin)',
+      delete: 'DELETE /electrical-assets/delete/:id (Admin)',
+      getAll: 'GET /electrical-assets',
+      getById: 'GET /electrical-assets/:id',
+      getByStatus: 'GET /electrical-assets/status/:status',
+      getByCapacity: 'GET /electrical-assets/capacity/:capacityKw',
+    },
+
+    thirdParty: {
+      access: 'GET /accessthirdparty',
+    },
+
+    authorization: {
+      adminRoutes: 'Require Admin JWT',
+      userRoutes: 'Require User or Admin JWT',
+    },
+  }
 })
 /*
 Route.post('user/register','AuthController.registerUser');
