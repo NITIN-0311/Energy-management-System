@@ -15,9 +15,22 @@
 
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import InvalidTokenException from './InvalidTokenException'
+import MissingTokenException from './MissingTokenException'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   constructor () {
     super(Logger)
+  }
+
+  public async handle(error: any, ctx: HttpContextContract) {
+    // Handle custom token exceptions
+    if (error instanceof InvalidTokenException || error instanceof MissingTokenException) {
+      return await error.handle(error, ctx)
+    }
+
+    // Let the base handler handle other exceptions
+    return super.handle(error, ctx)
   }
 }
