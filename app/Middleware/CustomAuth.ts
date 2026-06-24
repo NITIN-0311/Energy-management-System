@@ -1,20 +1,16 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Env from '@ioc:Adonis/Core/Env'
-
+import CustomTokenService from 'App/Services/customToken_service'
 
 export default class CustomAuth {
-  public async handle({request,response}: HttpContextContract, next: () => Promise<void>) {
+  constructor(private customTokenService: CustomTokenService) {}
 
-    const customToken=Env.get('CUSTOM_TOKEN')
-    const requestKey=request.header('custom_token');
-    
-    if(!requestKey)
-        response.unauthorized({message:'Missing custom token'})
+  public async handle({ request }: HttpContextContract, next: () => Promise<void>) {
+    const requestToken = request.header('custom_token')
 
-    else if (customToken!=requestKey)
-        response.unauthorized({message:'Invalid custom token'})
+    this.customTokenService.validateToken(requestToken)
 
-    else
-      await next()
+    // If validation passes, proceed to next middleware
+    await next()
   }
 }
+
