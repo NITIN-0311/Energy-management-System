@@ -51,10 +51,33 @@ Route.group(()=>{
 }).middleware('AuthAdmin');
 
 Route.group(()=>{
+    Route.post('/electrical-assets','ElectricalAssetsController.store');
+    Route.patch('/electrical-assets/update/:id','ElectricalAssetsController.updateById');
+    Route.delete('/electrical-assets/delete/:id','ElectricalAssetsController.deleteByid');
+}).middleware('AuthAdmin');
+
+
+Route.group(()=>{
+    Route.get('/electrical-assets','ElectricalAssetsController.fetchall');
+    Route.get('/electrical-assets/:id','ElectricalAssetsController.filter');
+    Route.get('/electrical-assets/status/:status','ElectricalAssetsController.fetchByStatus');
+    Route.get('/electrical-assets/capacity/:capacityKw','ElectricalAssetsController.fetchByCapacity');
+
+}).middleware('AdminOrUser').middleware('CustomAuth');
+
+
+Route.group(()=>{
     Route.get('/buildings','BuildingsController.fetchall');
     Route.get('/buildings/:id','BuildingsController.filter');
     Route.get('/buildings/buildingtype/:type','BuildingsController.fetchByType');
     Route.get('/buildings/area/:total_area_sqft','BuildingsController.fetchByArea');
+}).middleware('AdminOrUser').middleware('CustomAuth');
+
+Route.group(()=>{
+    Route.get('/electrical-assets','ElectricalAssetsController.fetchall');
+    Route.get('/electrical-assets/:id','ElectricalAssetsController.filter');
+    Route.get('/electrical-assets/status/:status','ElectricalAssetsController.fetchByStatus');
+    Route.get('/electrical-assets/capacity/:capacityKw','ElectricalAssetsController.fetchByCapacity');
 }).middleware('AdminOrUser').middleware('CustomAuth');
 
 //Routes for
