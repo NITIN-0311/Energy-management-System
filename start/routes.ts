@@ -55,16 +55,6 @@ Route.group(()=>{
     Route.delete('/electrical-assets/delete/:id','ElectricalAssetsController.deleteByid');
 }).middleware('AuthAdmin');
 
-
-Route.group(()=>{
-    Route.get('/electrical-assets','ElectricalAssetsController.fetchall');
-    Route.get('/electrical-assets/:id','ElectricalAssetsController.filter');
-    Route.get('/electrical-assets/status/:status','ElectricalAssetsController.fetchByStatus');
-    Route.get('/electrical-assets/capacity/:capacityKw','ElectricalAssetsController.fetchByCapacity');
-
-}).middleware('AdminOrUser').middleware('CustomAuth');
-
-
 Route.group(()=>{
     Route.get('/buildings','BuildingsController.fetchall');
     Route.get('/buildings/:id','BuildingsController.filter');
