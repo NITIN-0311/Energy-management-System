@@ -10,6 +10,7 @@
 */
 
 import Server from '@ioc:Adonis/Core/Server'
+import CustomAuth from 'App/Middleware/CustomAuth'
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,10 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
+  AuthAdmin: ()=> import('App/Middleware/AuthAdmin'),
+  AdminOrUser: ()=>import('App/Middleware/AdminOrUser'),
+  CustomAuth: ()=>import('App/Middleware/CustomAuth')
+
 })
+
+

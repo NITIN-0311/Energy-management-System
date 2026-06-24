@@ -1,37 +1,37 @@
-
 {
   "typescript": true,
-
+  
   "commands": [
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
     "@adonisjs/lucid/build/commands"
   ],
-
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
-
   "aliases": {
     "App": "app",
     "Config": "config",
     "Database": "database",
     "Contracts": "contracts"
   },
-
   "preloads": [
     "./start/routes",
-    "./start/kernel"
+    "./start/kernel",
+    {
+      "file": "./start/validator",
+      "environment": [
+        "web"
+      ]
+    }
   ],
-
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
-    "@adonisjs/lucid"
+    "@adonisjs/lucid",
+    "@adonisjs/auth"
   ],
-
   "aceProviders": [
     "@adonisjs/repl"
   ],
-
   "tests": {
     "suites": [
       {
@@ -43,7 +43,6 @@
       }
     ]
   },
-
   "testProviders": [
     "@japa/preset-adonis/TestsProvider"
   ]

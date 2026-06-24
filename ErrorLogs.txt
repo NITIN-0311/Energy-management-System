@@ -13,3 +13,31 @@ with single quotes
 
 7.const buildings= await Building.findBy('location',location); //(<column name, value>)
     Not passing the real column name
+
+
+
+
+import jwt from 'jsonwebtoken';
+import Env from '@ioc:Adonis/Core/Env'
+
+export default class JwtService{
+
+  public static generateToken(payload: object):string
+  {
+    const secret = Env.get('APP_KEY')
+    return jwt.sign(payload, secret, {expiresIn:'1hr'})
+  }
+
+  public static verifyToken(token: string)
+  {
+    try
+    {
+      const secret = Env.get('APP_KEY')
+      return jwt.verify(token,secret)
+    }
+    catch(error)
+    {
+      return null
+    }
+  }
+}

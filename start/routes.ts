@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import AuthAdmin from 'App/Middleware/AuthAdmin';
 
 /*
 Main module resposnible for routing the APIs Hits to the right controller
@@ -27,21 +28,37 @@ Main module resposnible for routing the APIs Hits to the right controller
 Route.get('/', async () => {
   return { hello: 'world' }
 })
+/*
+Route.post('user/register','AuthController.registerUser');
+Route.post('admin/register','AuthController.registerAdmin');
+Route.post('user/login', 'AuthController.login');
+*/
+/*
+Route.post('/test', async ({ auth }) => {
+  console.log(auth.use('admin').user)
+});
+*/
+Route.post('/admin/register','AuthController.registerAdmin');
+Route.post('/user/register','AuthController.registerUser');
+Route.post('/user/login','AuthController.userLogin');
+Route.post('/admin/login','AuthController.adminLogin');
+Route.get('/accessthirdparty','ThirdPartiesController.accessThirdParty')
 
-Route.post('/buildings','BuildingsController.store');
+Route.group(()=>{
+    Route.post('/buildings','BuildingsController.store');
+    Route.patch('/buildings/update/:id','BuildingsController.updateById');
+    Route.delete('/buildings/delete/:id','BuildingsController.deleteById');
+}).middleware('AuthAdmin');
 
-Route.get('/buildings','BuildingsController.fetchall');
-Route.get('/buildings/:id','BuildingsController.filter');
-Route.get('/buildings/buildingtype/:type','BuildingsController.fetchByType');
-Route.get('/buildings/area/:total_area_sqft','BuildingsController.fetchByArea');
-
-Route.patch('/buildings/update/:id','BuildingsController.updateById');
-
-Route.delete('/buildings/delete/:id','BuildingsController.deleteById');
-
+Route.group(()=>{
+    Route.get('/buildings','BuildingsController.fetchall');
+    Route.get('/buildings/:id','BuildingsController.filter');
+    Route.get('/buildings/buildingtype/:type','BuildingsController.fetchByType');
+    Route.get('/buildings/area/:total_area_sqft','BuildingsController.fetchByArea');
+}).middleware('AdminOrUser').middleware('CustomAuth');
 
 //Routes for
-Route.delete('/electrical_assests','ElectricalAssetsController.list');
+//Route.delete('/electrical_assests','ElectricalAssetsController.list');
 
 /*
 

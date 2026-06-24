@@ -2,18 +2,18 @@
   "name": "EnergyManagemenetSystem",
   "version": "1.0.0",
   "private": true,
-
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
     "start": "node build/server.js",
-    "test": "node ace test"
+    "test": "node ace test",
+    "seed:clear": "node ace db:seed --files=\"database/seeders/ManagedCred.ts\""
   },
-
   "devDependencies": {
     "@adonisjs/assembler": "^5.9.6",
     "@japa/preset-adonis": "^1.2.0",
     "@japa/runner": "^2.5.1",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^18.19.130",
     "@types/proxy-addr": "^2.0.3",
     "@types/source-map-support": "^0.5.10",
@@ -23,11 +23,12 @@
     "youch": "^4.1.1",
     "youch-terminal": "^2.2.3"
   },
-
   "dependencies": {
+    "@adonisjs/auth": "^8.2.3",
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/lucid": "^18.4.2",
     "@adonisjs/repl": "^3.1.11",
+    "jsonwebtoken": "^9.0.3",
     "luxon": "^3.7.2",
     "pg": "^8.21.0",
     "proxy-addr": "^2.0.7",
