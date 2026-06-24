@@ -24,8 +24,8 @@ import Route from '@ioc:Adonis/Core/Route'
 Main module resposnible for routing the APIs Hits to the right controller
 
 */
-Route.get('/', async () => {
-  return {
+Route.get('/', async ({ response }) => {
+  const apiInfo = {
     project: 'Energy Management System API',
     version: '1.0.0',
     description:
@@ -57,18 +57,11 @@ Route.get('/', async () => {
       getByStatus: 'GET /electrical-assets/status/:status',
       getByCapacity: 'GET /electrical-assets/capacity/:capacityKw',
     },
-
-    thirdParty: {
-      access: 'GET /accessthirdparty',
-    },
-
-    authorization: {
-      adminRoutes: 'Require Admin JWT',
-      userRoutes: 'Require User or Admin JWT',
-    },
   }
-})
-/*
+
+  response.header('Content-Type', 'application/json')
+  return response.send(JSON.stringify(apiInfo, null, 2))
+})/*
 Route.post('user/register','AuthController.registerUser');
 Route.post('admin/register','AuthController.registerAdmin');
 Route.post('user/login', 'AuthController.login');
