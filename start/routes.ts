@@ -19,7 +19,6 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import AuthAdmin from 'App/Middleware/AuthAdmin';
 
 /*
 Main module resposnible for routing the APIs Hits to the right controller

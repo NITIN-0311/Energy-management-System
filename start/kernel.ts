@@ -10,8 +10,6 @@
 */
 
 import Server from '@ioc:Adonis/Core/Server'
-import CustomAuth from 'App/Middleware/CustomAuth'
-
 /*
 |--------------------------------------------------------------------------
 | Global middleware

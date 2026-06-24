@@ -37,6 +37,9 @@ public async userLogin({ request, response }: HttpContextContract) {
   if (!user)
     return response.unauthorized({message: 'Invalid credentials'})
 
+  if (!password)
+      return response.badRequest({message: 'Password is required'})
+
   const isPasswordCorrect = await Hash.verify(user.password,password)
 
   if (!isPasswordCorrect)
