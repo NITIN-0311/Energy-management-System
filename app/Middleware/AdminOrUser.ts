@@ -17,7 +17,7 @@ export default class AdminOrUser {
     if (payload.role !== 'admin' && payload.role !== 'user') {
       return response.forbidden({message: 'Access denied'})
     }
-    request['user'] = payload
+    (request as any).user = payload
     await next()
   }
 

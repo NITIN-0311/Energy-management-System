@@ -30,7 +30,7 @@ export default class AuthAdmin {
         message: 'Only admin can access this resource'
       })
     }
-    request['user'] = payload
+    (request as any).user = payload
     await next()
   }
   }
