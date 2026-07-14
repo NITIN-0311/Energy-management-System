@@ -1,5 +1,5 @@
 {
-  "name": "EnergyManagemenetSystem",
+  "name": "EnergyManagementSystem",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -26,6 +26,7 @@
   "dependencies": {
     "@adonisjs/auth": "^8.2.3",
     "@adonisjs/core": "^5.9.0",
+    "@adonisjs/cors": "^1.0.7",
     "@adonisjs/lucid": "^18.4.2",
     "@adonisjs/repl": "^3.1.11",
     "jsonwebtoken": "^9.0.3",

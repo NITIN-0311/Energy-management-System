@@ -20,5 +20,4 @@ export default class AdminOrUser {
     (request as any).user = payload
     await next()
   }
-
 }

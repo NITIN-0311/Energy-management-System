@@ -1,6 +1,7 @@
 import Env from '@ioc:Adonis/Core/Env'
 import InvalidTokenException from 'App/Exceptions/InvalidTokenException'
 import MissingTokenException from 'App/Exceptions/MissingTokenException'
+import crypto from 'crypto'
 
 export default class CustomTokenService {
   /**
@@ -15,16 +16,26 @@ export default class CustomTokenService {
       throw new MissingTokenException('Custom token is required in request header')
     }
 
-    const expectedToken = Env.get('CUSTOM_TOKEN')
+    const parts = requestToken.split('.')
+    if (parts.length !== 2) {
+      throw new InvalidTokenException('The provided custom token is malformed')
+    }
 
-    if (expectedToken !== requestToken) {
-      throw new InvalidTokenException('The provided custom token is invalid')
+    const [payload, signature] = parts
+    const secret = Env.get('CUSTOM_TOKEN')
+
+    const expectedSignature = crypto.createHmac('sha256', secret).update(payload).digest('hex')
+
+    if (expectedSignature !== signature) {
+      throw new InvalidTokenException('The provided custom token signature is invalid')
     }
 
     return true
   }
 
-  public getToken(): string {
-    return Env.get('CUSTOM_TOKEN')
+  public getToken(payload: string = 'auth'): string {
+    const secret = Env.get('CUSTOM_TOKEN')
+    const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex')
+    return `${payload}.${signature}`
   }
 }

@@ -30,7 +30,18 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return await error.handle(error, ctx)
     }
 
-    // Let the base handler handle other exceptions
-    return super.handle(error, ctx)
+    if (error.code === 'E_VALIDATION_FAILURE') {
+      return ctx.response.status(422).send({
+        status: 'error',
+        message: 'Validation failed',
+        errors: error.messages.errors || error.messages
+      })
+    }
+
+    return ctx.response.status(error.status || 500).send({
+      status: 'error',
+      message: error.message || 'Internal Server Error',
+      code: error.code
+    })
   }
 }

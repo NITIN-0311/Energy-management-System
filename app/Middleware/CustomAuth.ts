@@ -9,8 +9,6 @@ export default class CustomAuth {
 
     this.customTokenService.validateToken(requestToken)
 
-    // If validation passes, proceed to next middleware
     await next()
   }
 }
-

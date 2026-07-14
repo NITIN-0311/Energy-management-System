@@ -1,7 +1,7 @@
 import Building from "App/Models/Building";
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import BuildingValidator, { ValidateFilterByArea, ValidateFilterById, ValidateFilterByType } from "App/Validators/BuildingValidator";
-
+//import ElectricalAsset from 'App/Models/ElectricalAsset';
 
 export default class BuildingsController {
 
@@ -50,7 +50,7 @@ export default class BuildingsController {
         return response.internalServerError({
           message:"internal server error occured",
           error:error
-        })
+        });
     }
   }
 
@@ -68,7 +68,7 @@ export default class BuildingsController {
     {
       return response.status(500).send(
         {
-          message:"internal server error occured",
+          message:"internal server error occurred",
           error:error,
         })
     }
@@ -222,16 +222,109 @@ export default class BuildingsController {
     return response.ok({
       message: 'Building deleted successfully',
       deletedCount: deleted})
-  }
+    }
 
-  catch(error){
+    catch(error){
       return response.status(500).send({
         message:"Internal server error",
         error:error
       })
     }
-}
+  }
+/*
+  public async getBuildingsWithAssets({response} :HttpContextContract) {
+    try
+    {
+      const result = await Building
+      .query()
+      .join('electrical_assets', 'buildings.id', '=', 'electrical_assets.building_id')
+      .select(
+        'buildings.*',
+        'electrical_assets.id as asset_id',
+        'electrical_assets.asset_name',
+        'electrical_assets.capacity_kw',
+        'electrical_assets.voltage_rating',
+        'electrical_assets.status',
+        'electrical_assets.installed_at'
+      )
+    return response.status(200).send(
+      {
+        data:result,
+        message:'Successfully retrieved assets data'
+      }
+    );
+    }
+      catch(error)
+      {
+        return response.status(500).send({
+          message:"Internal server error",
+          error:error
+        })
+      }
+  }
+*/
+public async getBuildingsWithAssets({ response }: HttpContextContract) {
+  console.log("Controller Hit - getBuildingsWithAssets");
+  try {
+    const rows = await Building
+      .query()
+      .join('electrical_assets', 'buildings.id', '=', 'electrical_assets.building_id')
+      .select(
+        'buildings.id as building_id',
+        'buildings.name',
+        'buildings.location',
+        'buildings.building_type',
+        'buildings.total_area_sqft',
+        'buildings.peak_load_kw',
 
+        'electrical_assets.id as asset_id',
+        'electrical_assets.asset_name',
+        'electrical_assets.capacity_kw',
+        'electrical_assets.voltage_rating',
+        'electrical_assets.status',
+        'electrical_assets.installed_at'
+      )
+
+    const grouped = new Map<number, any>()
+
+    for (const row of rows) {
+      const buildingId = row.building_id
+
+      if (!grouped.has(buildingId)) {
+        grouped.set(buildingId, {
+          id: buildingId,
+          name: row.name,
+          location: row.location,
+          building_type: row.building_type,
+          total_area_sqft: row.total_area_sqft,
+          peak_load_kw: row.peak_load_kw,
+          assets: []
+        })
+      }
+
+      grouped.get(buildingId).assets.push({
+        id: row.asset_id,
+        asset_name: row.asset_name,
+        capacity_kw: row.capacity_kw,
+        voltage_rating: row.voltage_rating,
+        status: row.status,
+        installed_at: row.installed_at
+      })
+    }
+    console.log(Array.from(grouped.values()));
+    return response.ok({
+      data: Array.from(grouped.values()),
+      message: 'Successfully retrieved buildings with assets'
+    })
+
+  } catch (error) {
+    console.log(error)
+    return response.internalServerError({
+      message: 'Internal server error',
+      error
+    })
+  }
+}
   /*
   public async update({params,req,res}:HttpContext)
   {

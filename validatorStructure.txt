@@ -1,0 +1,146 @@
+class BuildingController {
+  public async store({ request }: HttpContextContract) {
+
+    // What you write
+    const data = await request.validate(BuildingValidator)
+
+    // If validation succeeds
+    await Building.create(data)
+  }
+}
+
+// -----------------------------
+// Request.validate()
+// -----------------------------
+class Request {
+
+  async validate(ValidatorClass: any) {
+
+    // Step 1: Create validator instance
+    const validator = new ValidatorClass(this.ctx)
+
+    // Step 2: Extract schema & messages
+    const schema = validator.schema
+    const messages = validator.messages
+
+    // Step 3: Read request body
+    const body = this.body()
+
+    // Step 4: Call validation engine
+    const result = ValidationEngine.validate({
+      schema,
+      data: body,
+      messages,
+    })
+
+    // Step 5: Throw error if validation failed
+    if (!result.success) {
+      throw new ValidationException(result.errors)
+    }
+
+    // Step 6: Return only validated (whitelisted) data
+    return result.data
+  }
+}
+
+// -----------------------------
+// Validation Engine
+// -----------------------------
+class ValidationEngine {
+
+  static validate({ schema, data, messages }) {
+
+    const validatedData: any = {}
+    const errors: any[] = []
+
+    // Loop through every field defined in the schema
+    for (const fieldName in schema.fields) {
+
+      const field = schema.fields[fieldName]
+      const value = data[fieldName]
+
+      // Required check
+      if (value === undefined || value === null) {
+        if (!field.optional) {
+          errors.push({
+            field: fieldName,
+            message: messages?.[`${fieldName}.required`] ?? `${fieldName} is required`
+          })
+        }
+        continue
+      }
+
+      // Type check
+      if (!field.isValidType(value)) {
+        errors.push({
+          field: fieldName,
+          message: messages?.[`${fieldName}.${field.type}`]
+        })
+        continue
+      }
+
+      // Execute every validation rule
+      for (const rule of field.rules) {
+
+        if (!rule.validate(value)) {
+
+          errors.push({
+            field: fieldName,
+            message:
+              messages?.[`${fieldName}.${rule.name}`] ??
+              rule.defaultMessage
+          })
+
+          break
+        }
+      }
+
+      // Store only validated fields (Whitelisting)
+      validatedData[fieldName] = value
+    }
+
+    // Return result
+    if (errors.length > 0) {
+      return {
+        success: false,
+        errors
+      }
+    }
+
+    return {
+      success: true,
+      data: validatedData
+    }
+  }
+}
+
+
+
+ctx
+│
+├── request
+│      ├── body()
+│      ├── input()
+│      ├── qs()
+│      ├── headers()
+│      └── validate()
+│
+├── response
+│      ├── ok()
+│      ├── created()
+│      ├── notFound()
+│      └── status()
+│
+├── auth
+│      ├── user
+│      └── authenticate()
+│
+├── session
+│
+├── logger
+│
+├── params
+│
+├── route
+│
+└── view

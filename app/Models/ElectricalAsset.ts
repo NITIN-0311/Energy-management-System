@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class ElectricalAsset extends BaseModel {
+
   @column({ isPrimary: true })
   public id!: number;
 
@@ -10,6 +11,9 @@ export default class ElectricalAsset extends BaseModel {
 
   @column()
   public asset_name!: string;
+
+  @column()
+  public asset_type!: string;
 
   @column()
   public capacity_kw!: number;
@@ -25,6 +29,7 @@ export default class ElectricalAsset extends BaseModel {
     But it is necessary if we are using date functions
     eg: toFormat()
   */
+
   @column.dateTime({ autoCreate: true })
   public installed_at!: DateTime
 }

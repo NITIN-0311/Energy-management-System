@@ -52,7 +52,6 @@ export default class ElectricalAssetValidator {
     'voltage_rating.unsigned':'Voltage rating must be positive.',
 
     'status.enum':'Please enter a valid status.'
-
   }
 
 }

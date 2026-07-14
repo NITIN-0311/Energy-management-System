@@ -1,6 +1,6 @@
 {
   "typescript": true,
-  
+
   "commands": [
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",

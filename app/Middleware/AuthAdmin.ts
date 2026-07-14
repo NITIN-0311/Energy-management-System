@@ -5,7 +5,7 @@ export default class AuthAdmin {
   public async handle({request,response}: HttpContextContract, next: () => Promise<void>) {
  {
     const jwt_token = request.header('jwt_token')
-
+    
     if (!jwt_token)
       return response.unauthorized({message: 'jwt token missing' })
 

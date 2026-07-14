@@ -1,4 +1,7 @@
+
 import ElectricalAsset from "App/Models/ElectricalAsset";
+import Building from "App/Models/Building";
+
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import ElectricalAssetValidator,{ValidateFilterByCapacity,ValidateFilterById,ValidateFilterByStatus} from "App/Validators/ElectricalAssetValidator";
 
@@ -11,15 +14,18 @@ export default class ElectricalAssetsController {
 
   public async store({request,response}:HttpContextContract)
   {
+    console.log("Electrical asset controller store hit ")
     const payloadData = await this.validatePayload(request)
 
     try{
       const asset = await ElectricalAsset.create(payloadData)
+      console.log(asset)
       return response.created({ data:asset })
     }
 
     catch(error)
     {
+      console.log(error)
       return response.internalServerError({
         message:"Internal server error",
         error:error
@@ -174,7 +180,6 @@ export default class ElectricalAssetsController {
 
       schema:new ValidateFilterById().tempSchema,
       data:request.params()
-
     })
 
     try

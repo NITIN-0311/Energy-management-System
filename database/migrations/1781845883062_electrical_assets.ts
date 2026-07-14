@@ -6,11 +6,12 @@ export default class extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('building_id')
-      table.string('asset_name',100)
-      table.decimal('capacity_kw',10,2)
-      table.integer('voltage_rating')
-      table.string('status',50)
+      table.integer('building_id').notNullable()
+      table.string('asset_name',100).notNullable()
+      table.decimal('capacity_kw',10,2).notNullable()
+      table.integer('voltage_rating').notNullable()
+      table.string('status',50).notNullable()
+      table.timestamp('installed_at').defaultTo(this.raw('CURRENT_TIMESTAMP'))
       table.timestamp('updated_at').defaultTo(this.now())
     })
   }

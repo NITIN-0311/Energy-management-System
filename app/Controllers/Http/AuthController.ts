@@ -27,7 +27,8 @@ export default class AuthController {
     const {email,password} = request.only(['email','password'])
     const token = await auth.use('api').attempt(email,password);
     return token;
-  }*/
+  }
+  */
 
 public async userLogin({ request, response }: HttpContextContract) {
 
@@ -52,18 +53,22 @@ public async userLogin({ request, response }: HttpContextContract) {
 
 public async adminLogin({ request, response }: HttpContextContract) {
 
+  console.log('apt hit : admin login');
   const {email,password} = request.only(['email','password',])
+  console.log("Received details : ",email,password);
   const admin = await Admin.findBy('email', email)
 
   if (!admin)
-    return response.unauthorized({message: 'Invalid credentials', })
+    return response.unauthorized({message: 'Invalid credentials', authorizedFlag:false })
 
   const isPasswordCorrect = await Hash.verify(admin.password,password)
 
   if (!isPasswordCorrect)
-    return response.unauthorized({message: 'Invalid credentials',})
+    return response.unauthorized({message: 'Invalid credentials',authorizedFlag:false})
 
-  const token = JwtService.generateToken(admin, 'admin')
-  return {token, admin}
+  const token = await JwtService.generateToken(admin, 'admin')
+  console.log(`Returning token : ${token} admin : ${JSON.stringify(admin)} `);
+
+  return {token, admin, authorizedFlag:true}
   }
 }

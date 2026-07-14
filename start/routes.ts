@@ -21,8 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 /*
-Main module resposnible for routing the APIs Hits to the right controller
-
+  Main module resposnible for routing the APIs Hits to the right controller
 */
 Route.get('/', async ({ response }) => {
   const apiInfo = {
@@ -77,6 +76,8 @@ Route.post('/user/login','AuthController.userLogin');
 Route.post('/admin/login','AuthController.adminLogin');
 Route.get('/accessthirdparty','ThirdPartiesController.accessThirdParty')
 
+Route.get('/buildings/assets', 'BuildingsController.getBuildingsWithAssets');
+
 Route.group(()=>{
     Route.post('/buildings','BuildingsController.store');
     Route.patch('/buildings/update/:id','BuildingsController.updateById');
@@ -94,14 +95,14 @@ Route.group(()=>{
     Route.get('/buildings/:id','BuildingsController.filter');
     Route.get('/buildings/buildingtype/:type','BuildingsController.fetchByType');
     Route.get('/buildings/area/:total_area_sqft','BuildingsController.fetchByArea');
-}).middleware('AdminOrUser').middleware('CustomAuth');
+}).middleware('AdminOrUser');//.middleware('CustomAuth');
 
 Route.group(()=>{
     Route.get('/electrical-assets','ElectricalAssetsController.fetchall');
     Route.get('/electrical-assets/:id','ElectricalAssetsController.filter');
     Route.get('/electrical-assets/status/:status','ElectricalAssetsController.fetchByStatus');
     Route.get('/electrical-assets/capacity/:capacityKw','ElectricalAssetsController.fetchByCapacity');
-}).middleware('AdminOrUser').middleware('CustomAuth');
+}).middleware('AdminOrUser');//.middleware('CustomAuth');
 
 //Routes for
 //Route.delete('/electrical_assests','ElectricalAssetsController.list');

@@ -1,6 +1,7 @@
 import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+
 export default class BuildingValidator {
 
   constructor(protected httpContext: HttpContextContract) {
@@ -24,7 +25,6 @@ export default class BuildingValidator {
       rules.alpha({allow:['space']}),
       //rules.camelCase()
     ]),
-
     location:schema.string({},
       [
         rules.minLength(3),
